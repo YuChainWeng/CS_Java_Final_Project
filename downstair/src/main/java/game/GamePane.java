@@ -151,47 +151,26 @@ public class GamePane extends Pane {
     }
     
     private void generateInitialStairs() { //範圍 x : 35 ~ 530, y : 5 ~ 755
-    	Random random = new Random();
-
+        Random random = new Random();
         // 在角色腳下生成一個正常階梯
         NormalStair normalStair = new NormalStair();
         ImageView normalStairView = new ImageView(normalStair.getNormalStair());
         normalStairView.setPreserveRatio(true);
         normalStairView.setFitWidth(80);
-        normalStairView.setX(charaX - 13);
+        normalStairView.setX(charaX - 13); // 階梯在角色中間
         normalStairView.setY(charaY + 90); // 階梯在角色腳下
         stairs.add(normalStairView);
         this.getChildren().add(normalStairView);
 
         // 生成其他階梯在角色以下的範圍
-        int maxAttempts = 100; // 最多尝试次数，避免无限循环
         for (int i = 1; i < 10; i++) { // 假設生成10個階梯
-            ImageView stair = null;
-            boolean overlap;
-            int attempts = 0;
-            do {
-                overlap = false;
-                stair = stage.generateRandomStair();
-                stair.setPreserveRatio(true);
-                stair.setFitWidth(80);
-                stair.setX(35 + random.nextInt(495)); //生成範圍在35到530之間
-                stair.setY(charaY + 100 + random.nextInt((int) (canvas.getHeight() - charaY - 100))); // 階梯生成在角色以下的範圍
-                
-                // 檢查是否與已有階梯重疊
-                for (ImageView existingStair : stairs) {
-                    if (stair.getBoundsInParent().intersects(existingStair.getBoundsInParent())) {
-                        overlap = true;
-                        break;
-                    }
-                }
-
-                attempts++;
-            } while (overlap && attempts < maxAttempts);
-
-            if (!overlap) {
-                stairs.add(stair);
-                this.getChildren().add(stair); // 將階梯添加到Pane中
-            }
+            ImageView stair = stage.generateRandomStair();
+            stair.setPreserveRatio(true);
+            stair.setFitWidth(80);
+            stair.setX(35 + random.nextInt(495)); //生成範圍在35到530之間
+            stair.setY(charaY + 100 + random.nextInt((int) (canvas.getHeight() - charaY - 100))); // 階梯生成在角色以下的範圍
+            stairs.add(stair);
+            this.getChildren().add(stair); // 將階梯添加到Pane中
         }
     }
 }
