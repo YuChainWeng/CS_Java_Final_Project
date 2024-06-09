@@ -3,9 +3,14 @@ package game;
 import javafx.scene.image.Image;
 
 public class DamageStair {
+	private int damage = 1;
+	
+	public DamageStair(int damage) {
+		this.damage = damage;
+	}
 
-	public DamageStair() {
-
+	public int getDamage() {
+		return damage;
 	}
 	
 	public Image getDamageStair() {
