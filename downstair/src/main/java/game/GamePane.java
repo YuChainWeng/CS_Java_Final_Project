@@ -13,6 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.control.Label;
 public class GamePane extends Pane {
 
     private Canvas canvas;
@@ -22,6 +24,8 @@ public class GamePane extends Pane {
     private double charaX = 300;
     private double charaY = 400;
     private Rectangle[] lifeBars = new Rectangle[10];
+    private int level = 1;
+    private Label levelLabel = new Label(Integer.toString(level));
 
     public GamePane(Character character) {
         Image bgImage = new Image("file:src/main/resources/images/遊戲背景.jpeg");
@@ -31,15 +35,20 @@ public class GamePane extends Pane {
         ImageView levelImageView = new ImageView(levelImage);
         lifeImageView.setPreserveRatio(true); // 設定為保持比例
         lifeImageView.setFitWidth(80);
-        lifeImageView.setX(10);
+        lifeImageView.setX(100);
         lifeImageView.setY(10);
         levelImageView.setPreserveRatio(true); // 設定為保持比例
         levelImageView.setFitWidth(80);
-        levelImageView.setX(300);
-        levelImageView.setY(10);
-        this.getChildren().addAll(lifeImageView, levelImageView);
+        levelImageView.setX(400);
+        levelImageView.setY(15);        
+        levelLabel.setStyle("-fx-font-weight: bold;");
+        levelLabel.setFont(new Font("Arial Black", 30));
+        levelLabel.setTextFill(Color.WHITE);
+        levelLabel.setLayoutX(500);
+        levelLabel.setLayoutY(11);
+        this.getChildren().addAll(lifeImageView, levelImageView, levelLabel);
         for (int i = 0; i < lifeBars.length; i++) {
-            lifeBars[i] = new Rectangle(105 + i * 12, 20, 8, 25); // 設定每個長方形的位置和大小
+            lifeBars[i] = new Rectangle(205 + i * 12, 20, 8, 25); // 設定每個長方形的位置和大小
             lifeBars[i].setFill(Color.RED); // 設定生命長方形的顏色
             this.getChildren().add(lifeBars[i]); // 添加到Pane中
         }
@@ -97,7 +106,7 @@ public class GamePane extends Pane {
                     break;
             }
         });
-        this.setOnKeyReleased(event -> {
+        this.setOnKeyReleased(event -> { // 放開按鍵回復正面
             System.out.println("Key released: " + event.getCode()); // Debug print statement
             switch (event.getCode()) {
                 case RIGHT:
@@ -120,7 +129,6 @@ public class GamePane extends Pane {
         // Clear the screen
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         Image cha = character.getCharacterImageWithDirection(character.getCharacterName(), character.getDirection());
-        //Image cha = character.getThisCharacterImage();
         // Draw game elements like characters, enemies, and background
         gc.drawImage(cha, charaX, charaY, 45, 90);
     }
