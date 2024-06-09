@@ -30,6 +30,7 @@ public class GamePane extends Pane {
         this.setBackground(new Background(backgroundImage));
         this.character = character;
         initializeGame();
+        setupGameLoop();
     }
 
     private void initializeGame() {
@@ -38,7 +39,6 @@ public class GamePane extends Pane {
         gc = canvas.getGraphicsContext2D();
         this.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> this.requestFocus());
         setupControls();
-        setupGameLoop();
     }
 
     private void setupGameLoop() {

@@ -19,10 +19,10 @@ import javafx.scene.control.Button;
 public class MainPage extends Application {
 
     private final int WIDTH = 650;
-    private final int HEIGHT = 900;
+    private final int HEIGHT = 800;
     private SettingsPane settingsPane;
     Character character;
-
+    private ImageView currentSelectedImageView; // Keep track of the currently selected character
     @Override
     public void start(Stage primaryStage) {
 
@@ -41,12 +41,15 @@ public class MainPage extends Application {
 
         // Load character images
         ImageView char1ImageView = character.getCharacterImage("Black", 150, 300);
-        char1ImageView.setOnMouseClicked(e -> chooseCharacter("Black"));
+        //透明度50%
+        char1ImageView.setOpacity(0.5);
+        char1ImageView.setOnMouseClicked(e -> chooseCharacter("Black", char1ImageView));
         StackPane.setAlignment(char1ImageView, Pos.CENTER_LEFT);
         StackPane.setMargin(char1ImageView, new Insets(200, 0, 0, 25));  // Add some margin
 
         ImageView char2ImageView = character.getCharacterImage("White", 150, 300);
-        char2ImageView.setOnMouseClicked(e -> chooseCharacter("White"));
+        char2ImageView.setOpacity(0.5);
+        char2ImageView.setOnMouseClicked(e -> chooseCharacter("White", char2ImageView));
         StackPane.setAlignment(char2ImageView, Pos.CENTER_RIGHT);
         StackPane.setMargin(char2ImageView, new Insets(200, 25, 0, 0));  // Add some margin
 
@@ -101,8 +104,16 @@ public class MainPage extends Application {
         primaryStage.show();
     }
 
-    private void chooseCharacter(String characterName) {
+    private void chooseCharacter(String characterName, ImageView charImageView) {
+    	if (currentSelectedImageView != null && currentSelectedImageView != charImageView) {
+            currentSelectedImageView.setOpacity(0.5);
+        }
+        // 選擇新角色並將透明度設置為 100%
         character.chooseCharacter(characterName);
+        charImageView.setOpacity(1.0);
+
+        // 更新當前選擇的角色及其 ImageView
+        currentSelectedImageView = charImageView;
     }
 
     private void showSettings(Stage stage) {

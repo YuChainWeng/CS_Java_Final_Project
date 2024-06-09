@@ -1,0 +1,44 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007fa7b3760ca6, pid=26518, tid=26570
+#
+# JRE version: Java(TM) SE Runtime Environment (22.0.1+8) (build 22.0.1+8-16)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (22.0.1+8-16, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, linux-amd64)
+# Problematic frame:
+# C  [libnvwgf2umx.so+0x2741ca6]
+#
+# No core dump will be written. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please visit:
+#   https://bugreport.java.com/bugreport/crash.jsp
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: --module-path=/mnt/e/downstair/target/classes:/home/oneal0604/.m2/repository/org/openjfx/javafx-base/20.0.1/javafx-base-20.0.1-linux.jar:/home/oneal0604/.m2/repository/org/openjfx/javafx-controls/20.0.1/javafx-controls-20.0.1-linux.jar:/home/oneal0604/.m2/repository/org/openjfx/javafx-fxml/20.0.1/javafx-fxml-20.0.1-linux.jar:/home/oneal0604/.m2/repository/org/openjfx/javafx-graphics/20.0.1/javafx-graphics-20.0.1-linux.jar --add-modules=game -Djdk.module.main=game game/game.App
+
+Host: Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz, 12 cores, 7G, Ubuntu 22.04.3 LTS
+Time: Wed Jun  5 22:35:37 2024 CST elapsed time: 5.491527 seconds (0d 0h 0m 5s)
+
+---------------  T H R E A D  ---------------
+
+Current thread is native thread
+
+Stack: [0x00007fa7c0f6d000,0x00007fa7c176d000],  sp=0x00007fa7c176bda0,  free space=8187k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libnvwgf2umx.so+0x2741ca6]
+
+siginfo: si_signo: 11 (SIGSEGV), si_code: 1 (SEGV_MAPERR), si_addr: 0x00007fa7c176d000
+
+Registers:
+RAX=0x000000000000000a, RBX=0x00007fa7bc208960, RCX=0x00007fa7bc20a001, RDX=0x00007fa7c176bdb0
+RSP=0x00007fa7c176bda0, RBP=0x0000000000000000, RSI=0x00007fa7bc208960, RDI=0x00007fa7bc192540
+R8 =0x00007fa7bc192540, R9 =0x00007ffe0f5f1080, R10=0x00007fa7c176bd90, R11=0x87e1e22a5838cfd6
+R12=0x00007fa7c176be07, R13=0x0000000000000000, R14=0x00007fa7c176d000, R15=0x0000000000000000
+RIP=0x00007fa7b3760ca6, EFLAGS=0x0000000000010246, CSGSFS=0x002b000000000033, ERR=0x0000000000000004
+  TRAPNO=0x000000000000000e
+
+
+Top of Stack: (sp=0x00007fa7c176bda0)
+0x00007fa7c176bda0:   00007fa7bc192540 
