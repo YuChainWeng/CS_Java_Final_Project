@@ -10,20 +10,39 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.input.MouseEvent;
-
-
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 public class GamePane extends Pane {
 
     private Canvas canvas;
     private GraphicsContext gc;
     private long lastUpdateTime = 0;
     Character character;
-    private double charaX = 0;
-    private double charaY = 0;
-
+    private double charaX = 300;
+    private double charaY = 400;
+    private Rectangle[] lifeBars = new Rectangle[10];
 
     public GamePane(Character character) {
         Image bgImage = new Image("file:src/main/resources/images/遊戲背景.jpeg");
+        Image lifeImage = new Image("file:src/main/resources/images/Life.png");
+        Image levelImage = new Image("file:src/main/resources/images/Level.png");
+        ImageView lifeImageView = new ImageView(lifeImage);
+        ImageView levelImageView = new ImageView(levelImage);
+        lifeImageView.setPreserveRatio(true); // 設定為保持比例
+        lifeImageView.setFitWidth(80);
+        lifeImageView.setX(10);
+        lifeImageView.setY(10);
+        levelImageView.setPreserveRatio(true); // 設定為保持比例
+        levelImageView.setFitWidth(80);
+        levelImageView.setX(300);
+        levelImageView.setY(10);
+        this.getChildren().addAll(lifeImageView, levelImageView);
+        for (int i = 0; i < lifeBars.length; i++) {
+            lifeBars[i] = new Rectangle(105 + i * 12, 20, 8, 25); // 設定每個長方形的位置和大小
+            lifeBars[i].setFill(Color.RED); // 設定生命長方形的顏色
+            this.getChildren().add(lifeBars[i]); // 添加到Pane中
+        }
         BackgroundImage backgroundImage = new BackgroundImage(bgImage, BackgroundRepeat.NO_REPEAT, 
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
                 new BackgroundSize(100, 100, true, true, false, true));
@@ -61,12 +80,29 @@ public class GamePane extends Pane {
             System.out.println("Key pressed: " + event.getCode()); // Debug print statement
             switch (event.getCode()) {
                 case RIGHT:
-                    charaX += 10;
-                    System.out.println("Moving right to: " + charaX); // Debug print statement
+                	if (charaX <= 560) {
+                		charaX += 10;
+                		character.setDirection("right");
+                		System.out.println(character.getDirection());
+                    	System.out.println("Moving right to: " + charaX); // Debug print statement
+                	}
                     break;
                 case LEFT:
-                    charaX -= 10;
-                    System.out.println("Moving left to: " + charaX); // Debug print statement
+                    if (charaX >= 35) {
+                    	charaX -= 10;
+                    	character.setDirection("left");
+                    	System.out.println(character.getDirection());
+                    	System.out.println("Moving left to: " + charaX); // Debug print statement
+                    }
+                    break;
+            }
+        });
+        this.setOnKeyReleased(event -> {
+            System.out.println("Key released: " + event.getCode()); // Debug print statement
+            switch (event.getCode()) {
+                case RIGHT:
+                case LEFT:
+                    character.setDirection("front");
                     break;
             }
         });
@@ -77,13 +113,25 @@ public class GamePane extends Pane {
     private void update(double deltaTime) {
         // Update game logic here, e.g., character movement, check collisions
         //charaX += 100 * deltaTime;
+    	updateLifeBar(character.getLife());
     }
 
     private void draw() {
         // Clear the screen
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
+        Image cha = character.getCharacterImageWithDirection(character.getCharacterName(), character.getDirection());
+        //Image cha = character.getThisCharacterImage();
         // Draw game elements like characters, enemies, and background
-        gc.drawImage(character.getThisCharacterImage(), charaX, charaY, 45, 90);
+        gc.drawImage(cha, charaX, charaY, 45, 90);
+    }
+    
+    private void updateLifeBar(int remainingLife) { // 更新生命條
+        for (int i = 0; i < lifeBars.length; i++) {
+            if (i < remainingLife) {
+                lifeBars[i].setVisible(true); // 將前remainingLife個長方形設置為可見
+            } else {
+                lifeBars[i].setVisible(false); // 其餘的設置為不可見
+            }
+        }
     }
 }

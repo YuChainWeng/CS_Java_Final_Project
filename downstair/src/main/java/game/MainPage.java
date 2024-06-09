@@ -124,10 +124,15 @@ public class MainPage extends Application {
     }
 
     private void startGame(Stage stage) {
+		if (currentSelectedImageView == null) { // If no character is selected
+			System.out.println("Please select a character first!");
+			return;
+		}
         System.out.println("Game Started");
         GamePane gamePane = new GamePane(character);
         Scene gameScene = new Scene(gamePane, WIDTH, HEIGHT);
         stage.setScene(gameScene);
+        gamePane.requestFocus(); // Focus on the game scene
         // Logic to start the game
     }
 
