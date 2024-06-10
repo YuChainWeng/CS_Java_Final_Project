@@ -1,36 +1,56 @@
 package game;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 
-import java.util.Random;
 
-public class Stage {
+public class Stage{
 
-    private NormalStair normalStair;
-    private SlowStair slowStair;
-    private DamageStair damageStair;
-
-    public Stage() {
-        normalStair = new NormalStair();
-        slowStair = new SlowStair(2);
-        damageStair = new DamageStair(1); 
+    private double positionX;
+    private double positionY;
+    private Image stariImage;
+    private ImageView stairImageView;
+    private double width;
+    private double height;
+    private double speed;
+    public Image getStairImage() {
+        return stariImage;
     }
-
-    public ImageView generateRandomStair() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(3); // 生成0到2之間的隨機數，用於選擇階梯類型
-
-        // 根據隨機數選擇階梯類型並返回相應的圖像視圖
-        switch (randomNumber) {
-            case 0:
-                return new ImageView(normalStair.getNormalStair());
-            case 1:
-                return new ImageView(slowStair.getSlowStair());
-            case 2:
-                return new ImageView(damageStair.getDamageStair());
-            default:
-                return null;
-        }
+    public ImageView getStairImageView() {
+        return stairImageView;
+    }
+    public void setStairImage(Image stairImage) {
+        this.stariImage = stairImage;
+        this.stairImageView = new ImageView(stairImage);
+    }
+    public double getPositionX() {
+        return positionX;
+    }
+    public void setPositionX(double positionX) {
+        this.positionX = positionX;
+    }
+    public double getPositionY() {
+        return positionY;
+    }
+    public void setPositionY(double positionY) {
+        this.positionY = positionY;
+    }
+    public double getWidth() {
+        return width;
+    }
+    public void setWidth(double width) {
+        this.width = width;
+    }
+    public double getHeight() {
+        return height;
+    }
+    public void setHeight(double height) {
+        this.height = height;
+    }
+    public double getSpeed() {
+        return speed;
+    }
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 }

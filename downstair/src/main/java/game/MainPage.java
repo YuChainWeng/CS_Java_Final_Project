@@ -19,7 +19,7 @@ import javafx.scene.control.Button;
 public class MainPage extends Application {
 
     private final int WIDTH = 650;
-    private final int HEIGHT = 800;
+    private final int HEIGHT =  900;
     private SettingsPane settingsPane;
     Character character;
     private ImageView currentSelectedImageView; // Keep track of the currently selected character
@@ -30,7 +30,7 @@ public class MainPage extends Application {
         StackPane root = new StackPane();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setScene(scene);
-        character = new Character("Black");
+        character = new Character("Black", 0, 0, 0, 0,0);
 
         // Load and set the background image to fit the scene
         Image bgImage = new Image("file:src/main/resources/images/首頁背景.jpeg");
