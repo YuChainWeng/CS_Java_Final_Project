@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -13,11 +14,13 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 
 
 
 public class MainPage extends Application {
 
+    private Stage primaryStage;
     private final int WIDTH = 650;
     private final int HEIGHT =  900;
     private SettingsPane settingsPane;
@@ -26,10 +29,18 @@ public class MainPage extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        this.primaryStage = primaryStage;
+        setupInitialUI(primaryStage);
+
+        primaryStage.setResizable(false);
+        primaryStage.show();
+    }
+
+    private void setupInitialUI(Stage stage){
         // Use StackPane for easier background setting
         StackPane root = new StackPane();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
-        primaryStage.setScene(scene);
+        stage.setScene(scene);
         character = new Character("Black", 0, 0, 0, 0,0);
 
         // Load and set the background image to fit the scene
@@ -59,7 +70,7 @@ public class MainPage extends Application {
         settingsImageView.setFitWidth(37.5);
         settingsImageView.setFitHeight(75);
         Button settingsButton = new Button("", settingsImageView);
-        settingsButton.setOnMouseClicked(e -> showSettings(primaryStage));
+        settingsButton.setOnMouseClicked(e -> showSettings(stage));
         settingsButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         StackPane.setAlignment(settingsButton, Pos.TOP_LEFT);
         StackPane.setMargin(settingsButton, new Insets(10));  // Add some margin
@@ -69,13 +80,13 @@ public class MainPage extends Application {
         ImageView startImageView = new ImageView(startImage);
         startImageView.setFitWidth(150);
         startImageView.setFitHeight(75);
-        startImageView.setOnMouseClicked(e -> startGame(primaryStage));
+        startImageView.setOnMouseClicked(e -> startGame(stage));
         StackPane.setAlignment(startImageView, Pos.BOTTOM_CENTER);
         StackPane.setMargin(startImageView, new Insets(0, 0, 150, 5));  // Adjust vertical position by setting bottom margin
 
         // High Scores
         Button highScoresButton = new Button("High Scores");
-        highScoresButton.setOnAction(e -> showHighScores(primaryStage));
+        highScoresButton.setOnAction(e -> showHighScores(stage));
         StackPane.setAlignment(highScoresButton, Pos.BOTTOM_CENTER);
         StackPane.setMargin(highScoresButton, new Insets(0, 0, 100, 0));
 
@@ -85,7 +96,7 @@ public class MainPage extends Application {
         imageView.setFitWidth(37.5);
         imageView.setFitHeight(75);
         Button exitButton = new Button("", imageView);
-        exitButton.setOnAction(e -> primaryStage.close());
+        exitButton.setOnAction(e -> stage.close());
         exitButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         StackPane.setAlignment(exitButton, Pos.BOTTOM_RIGHT);
         StackPane.setMargin(exitButton, new Insets(10));
@@ -98,10 +109,6 @@ public class MainPage extends Application {
         StackPane.setAlignment(settingsPane, Pos.CENTER);
         StackPane.setMargin(settingsPane, new Insets(0, 0, 0, 0));  // Add some margin
         root.getChildren().add(settingsPane);
-
-
-        primaryStage.setResizable(false);
-        primaryStage.show();
     }
 
     private void chooseCharacter(String characterName, ImageView charImageView) {
@@ -134,10 +141,32 @@ public class MainPage extends Application {
         stage.setScene(gameScene);
         gamePane.requestFocus(); // Focus on the game scene
         // Logic to start the game
+        gamePane.setGameEndListener(()->handleGameEnd(gamePane, stage));
+
+    }
+
+    private void handleGameEnd(GamePane gamePane, Stage stage) {
+        gamePane.stopGameLoop();  // Stop the game loop
+        gamePane.cleanupResources();  // Cleanup resources
+        showGameOverScreen(gamePane.getLevel(),stage);
+        
+    }
+
+    private void showGameOverScreen(int level, Stage stage) {
+        EndPane endPane = new EndPane(level, () -> restartGame(stage),()->showMainPage());
+        stage.setScene(new Scene(endPane, WIDTH, HEIGHT));
+    }
+
+    private void restartGame(Stage stage) {
+        startGame(stage);
     }
 
     private void showHighScores(Stage stage) {
         // Logic to display high scores
+    }
+
+    private void showMainPage(){
+        setupInitialUI(primaryStage);
     }
 
     public static void main(String[] args) {

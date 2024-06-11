@@ -15,6 +15,8 @@ public class Character extends ImageView {
 	private double velocityY = 0;
 	private double velocityX = 0;
 	private double gravity = 1;
+	private double invincibleTime = 0;
+	private double slowingTime=0;
 
 	public Character(String character, double positionX, double positionY, double width, double height, double velocityX) {
 		this.CharacterName = character;
@@ -149,5 +151,21 @@ public class Character extends ImageView {
 
 	public void setVelocityX(double velocityX) {
 		this.velocityX = velocityX;
+	}
+
+	public double getInvincibleTime() {
+		return invincibleTime;
+	}
+
+	public void setInvincibleTime(double invincibleTime) {
+		this.invincibleTime = invincibleTime;
+	}
+
+	public double getSlowingTime(){
+		return slowingTime;
+	}
+
+	public void setSlowingTime(double slowingTime){
+		this.slowingTime = slowingTime;
 	}
 }
