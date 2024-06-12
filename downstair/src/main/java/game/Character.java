@@ -37,8 +37,26 @@ public class Character extends ImageView {
 		return charImage;
 	}
 
+	public Image getChatacterDiedImage(String ChoosenCharacter) {
+		Image charImage;
+		if (ChoosenCharacter.equals("Black")) {
+			charImage = new Image("file:src/main/resources/images/黑無常死掉.png");
+		} else {
+			charImage = new Image("file:src/main/resources/images/白無常死掉.png");
+		}
+		return charImage;
+	}
+
 	public ImageView getCharacterImage(String ChoosenCharacter, int width, int height) {
 		Image charImage = getCharacterImage(ChoosenCharacter);
+		ImageView charImageView = new ImageView(charImage);
+		charImageView.setFitWidth(width);
+		charImageView.setFitHeight(height);
+		return charImageView;
+	}
+
+	public ImageView getCharacterDiedImage(String ChoosenCharacter, int width, int height) {
+		Image charImage = getChatacterDiedImage(ChoosenCharacter);
 		ImageView charImageView = new ImageView(charImage);
 		charImageView.setFitWidth(width);
 		charImageView.setFitHeight(height);
