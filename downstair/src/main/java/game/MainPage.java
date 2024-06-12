@@ -15,7 +15,10 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
-
+import javafx.scene.control.Label;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 
 
 public class MainPage extends Application {
@@ -24,32 +27,40 @@ public class MainPage extends Application {
     private final int WIDTH = 650;
     private final int HEIGHT =  900;
     private SettingsPane settingsPane;
+    private InstructionPane instructionsPane;
     Character character;
+    private Label chooseCharacterLabel;
     private ImageView currentSelectedImageView; // Keep track of the currently selected character
+    private MediaPlayer mediaPlayer;
     @Override
     public void start(Stage primaryStage) {
 
         this.primaryStage = primaryStage;
+        playBackgroundMusic("src/main/resources/audios/bgm.mp3");
         setupInitialUI(primaryStage);
-
         primaryStage.setResizable(false);
         primaryStage.show();
     }
 
     private void setupInitialUI(Stage stage){
         // Use StackPane for easier background setting
+    	
         StackPane root = new StackPane();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setScene(scene);
         character = new Character("Black", 0, 0, 45, 90,0);
-
         // Load and set the background image to fit the scene
         Image bgImage = new Image("file:src/main/resources/images/首頁背景.jpeg");
         BackgroundImage backgroundImage = new BackgroundImage(bgImage, BackgroundRepeat.NO_REPEAT, 
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
                 new BackgroundSize(100, 100, true, true, false, true));
         root.setBackground(new Background(backgroundImage));
-
+        chooseCharacterLabel = new Label("請選擇角色");
+        chooseCharacterLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 25;");
+        chooseCharacterLabel.setTranslateY(50);
+        StackPane.setAlignment(chooseCharacterLabel, Pos.CENTER);
+        StackPane.setMargin(chooseCharacterLabel, new Insets(0, 0, 0, 0));  // Add some margin
+        root.getChildren().add(chooseCharacterLabel);
         // Load character images
         ImageView char1ImageView = character.getCharacterImage("Black", 150, 300);
         //透明度50%
@@ -74,7 +85,16 @@ public class MainPage extends Application {
         settingsButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         StackPane.setAlignment(settingsButton, Pos.TOP_LEFT);
         StackPane.setMargin(settingsButton, new Insets(10));  // Add some margin
-
+        
+        Image instructionImage = new Image("file:src/main/resources/images/遊戲說明.png");
+        ImageView instructionImageView = new ImageView(instructionImage);
+        instructionImageView.setFitWidth(37.5);
+        instructionImageView.setFitHeight(75);
+        instructionImageView.setOnMouseClicked(e -> showInstruction(stage));
+        instructionImageView.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+        StackPane.setAlignment(instructionImageView, Pos.TOP_RIGHT);
+        StackPane.setMargin(instructionImageView, new Insets(10));  // Add some margin
+        
         // Start Image as clickable
         Image startImage = new Image("file:src/main/resources/images/開始.png");
         ImageView startImageView = new ImageView(startImage);
@@ -102,25 +122,32 @@ public class MainPage extends Application {
         StackPane.setMargin(exitButton, new Insets(10));
 
         // Add all nodes to root
-        root.getChildren().addAll(settingsButton, startImageView, highScoresButton, exitButton, char1ImageView, char2ImageView);
+        root.getChildren().addAll(settingsButton, instructionImageView, startImageView, highScoresButton, exitButton, char1ImageView, char2ImageView);
 
         // Initialize Settings Pane
-        settingsPane = new SettingsPane();
+        settingsPane = new SettingsPane(this);
         StackPane.setAlignment(settingsPane, Pos.CENTER);
         StackPane.setMargin(settingsPane, new Insets(0, 0, 0, 0));  // Add some margin
         root.getChildren().add(settingsPane);
+        
+        instructionsPane = new InstructionPane();
+        StackPane.setAlignment(instructionsPane, Pos.CENTER);
+        StackPane.setMargin(instructionsPane, new Insets(0, 0, 0, 0));  // Add some margin
+        root.getChildren().add(instructionsPane);
     }
 
     private void chooseCharacter(String characterName, ImageView charImageView) {
     	if (currentSelectedImageView != null && currentSelectedImageView != charImageView) {
             currentSelectedImageView.setOpacity(0.5);
         }
+    	playAudio("src/main/resources/audios/button03a.mp3");
         // 選擇新角色並將透明度設置為 100%
         character.chooseCharacter(characterName);
         charImageView.setOpacity(1.0);
 
         // 更新當前選擇的角色及其 ImageView
         currentSelectedImageView = charImageView;
+        chooseCharacterLabel.setVisible(false);
     }
 
     private void showSettings(Stage stage) {
@@ -129,7 +156,13 @@ public class MainPage extends Application {
 
         // Logic to display settings
     }
-
+    
+	private void showInstruction(Stage stage) {
+		System.out.println("Instructions Panel Opened");
+		instructionsPane.toggleVisibility();
+		// Logic to display instructions
+	}
+    
     private void startGame(Stage stage) {
 		if (currentSelectedImageView == null) { // If no character is selected
 			System.out.println("Please select a character first!");
@@ -168,7 +201,26 @@ public class MainPage extends Application {
     private void showMainPage(){
         setupInitialUI(primaryStage);
     }
+    //撥放音樂
+    private void playAudio(String audioFilePath) {
+        Media sound = new Media(new File(audioFilePath).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+    }
+    
+    public void playBackgroundMusic(String audioFilePath) {
+        Media sound = new Media(new File(audioFilePath).toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop the music
+        mediaPlayer.setVolume(0.3);
+        mediaPlayer.play();
+    }
 
+    public void stopBackgroundMusic() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+    }
     public static void main(String[] args) {
         launch(args);
     }

@@ -13,7 +13,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Background;
 import javafx.scene.image.ImageView;
-
+import javafx.scene.control.Label;
 public class EndPane extends Pane {
     private int levelReached;
     Character character;
@@ -53,15 +53,14 @@ public class EndPane extends Pane {
         HBox button = new HBox(20);
         button.setAlignment(Pos.CENTER);
 
-        Image LevelImage = new Image("file:src/main/resources/images/Level.png");
-        ImageView LevelImageView = new ImageView(LevelImage);
-        LevelImageView.setFitWidth(160);
-        LevelImageView.setFitHeight(60);
-        levelbox.getChildren().add(LevelImageView);
-
+        Label levelLabel = new Label("Level");
+        levelLabel.setFont(Font.font("Arial", 35));
+        levelLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+        levelbox.getChildren().add(levelLabel);
+        
         Text levelText = new Text(" " + levelReached);
         levelText.setFont(Font.font("Arial", 35));
-        levelText.setStyle("-fx-fill: white;");
+        levelText.setStyle("-fx-fill: white; -fx-font-weight: bold;");
         levelbox.getChildren().add(levelText);
 
         Button restartButton = new Button("");
