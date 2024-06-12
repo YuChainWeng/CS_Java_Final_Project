@@ -5,6 +5,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundSize;
@@ -16,8 +18,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
 import java.util.*;
+import java.io.File;
 import java.time.Instant;
-
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 public class GamePane extends Pane {
 
     private Canvas canvas;
@@ -30,7 +34,7 @@ public class GamePane extends Pane {
     Character character;
     private Rectangle[] lifeBars = new Rectangle[10];
     private int level = 1;
-    private Label levelLabel = new Label(Integer.toString(level));
+    private Label levelCountLabel = new Label(Integer.toString(level));
     private ArrayList<Stage> stairs = new ArrayList<>();
     private double gravity = 300; // Gravity force
     private boolean rightcollition = false;
@@ -38,35 +42,35 @@ public class GamePane extends Pane {
     private double stairSpeed = -50;
     private long gameStartTime;
     private Runnable gameEndCallback;
-
+    private MediaPlayer mediaPlayer;
 
     public GamePane(Character character) {
         Image bgImage = new Image("file:src/main/resources/images/遊戲背景.jpeg");
-        Image lifeImage = new Image("file:src/main/resources/images/Life.png");
-        Image levelImage = new Image("file:src/main/resources/images/Level.png");
-        ImageView lifeImageView = new ImageView(lifeImage);
-        ImageView levelImageView = new ImageView(levelImage);
+        Label lifeLabel = new Label("Life");
+        Label levelLabel = new Label("Level");
         canvas = new Canvas(650, 900); // Set canvas size
         this.getChildren().add(canvas);
         gc = canvas.getGraphicsContext2D();
         this.gameStartTime = Instant.now().toEpochMilli();
-
-        lifeImageView.setPreserveRatio(true); // 設定為保持比例
-        lifeImageView.setFitWidth(80);
-        lifeImageView.setX(100);
-        lifeImageView.setY(10);
-
-        levelImageView.setPreserveRatio(true); // 設定為保持比例
-        levelImageView.setFitWidth(80);
-        levelImageView.setX(400);
-        levelImageView.setY(15);
-
+        
+        lifeLabel.setStyle("-fx-font-weight: bold;");
+        lifeLabel.setFont(new Font("Arial Black", 30));
+        lifeLabel.setTextFill(Color.WHITE);
+        lifeLabel.setLayoutX(100);
+        lifeLabel.setLayoutY(11);
+        
         levelLabel.setStyle("-fx-font-weight: bold;");
         levelLabel.setFont(new Font("Arial Black", 30));
         levelLabel.setTextFill(Color.WHITE);
-        levelLabel.setLayoutX(500);
+        levelLabel.setLayoutX(400);
         levelLabel.setLayoutY(11);
-        this.getChildren().addAll(lifeImageView, levelImageView, levelLabel);
+
+        levelCountLabel.setStyle("-fx-font-weight: bold;");
+        levelCountLabel.setFont(new Font("Arial Black", 30));
+        levelCountLabel.setTextFill(Color.WHITE);
+        levelCountLabel.setLayoutX(500);
+        levelCountLabel.setLayoutY(11);
+        this.getChildren().addAll(lifeLabel, levelLabel, levelCountLabel);
         for (int i = 0; i < lifeBars.length; i++) {
             lifeBars[i] = new Rectangle(205 + i * 12, 20, 8, 25); // 設定每個長方形的位置和大小
             lifeBars[i].setFill(Color.RED); // 設定生命長方形的顏色
@@ -182,6 +186,7 @@ public class GamePane extends Pane {
     private void checkGameOverConditions() {
         if (character.getLife() <= 0 || character.getPositionY() < -200 || character.getPositionY() > 1000) {
             if( gameEndCallback != null)
+            playAudio("src/main/resources/audios/lose.wav");
             gameEndCallback.run();
             System.out.println("Game Over");
         }
@@ -219,11 +224,16 @@ public class GamePane extends Pane {
                 if (stair instanceof SlowStair && character.getVelocityX() > 5) {
                     character.setVelocityX(character.getVelocityX() + ((SlowStair) stair).getSlowingspeed());
                 } else if (stair instanceof DamageStair && character.getInvincibleTime() <= 0) {
+                	playAudio("src/main/resources/audios/被火燒到.mp3");
                     character.setLife(character.getLife() - ((DamageStair) stair).getDamage());
                     character.setInvincibleTime(1);
                     character.setVelocityX(20);
-                } else
+                } else if (stair instanceof NormalStair) {
+                    playAudio("src/main/resources/audios/掉到雲上面.mp3"); // 播放掉落音效
+                }
+                else {
                     character.setVelocityX(20);
+                    }
             } else
                 checkEdgeCollision(character, stair);
         }
@@ -255,7 +265,6 @@ public class GamePane extends Pane {
         double charRight = charLeft + character.getWidth();
         double charTop = character.getPositionY();
         double charBottom = charTop + character.getHeight();
-
         double stairLeft = stair.getPositionX();
         double stairRight = stairLeft + stair.getWidth();
         double stairTop = stair.getPositionY();
@@ -299,7 +308,7 @@ public class GamePane extends Pane {
                 lifeBars[i].setVisible(false); // 其餘的設置為不可見
             }
         }
-        levelLabel.setText(Integer.toString(level));
+        levelCountLabel.setText(Integer.toString(level));
     }
 
     
@@ -337,5 +346,15 @@ public class GamePane extends Pane {
 
     public int getLevel() {
         return level;
+    }
+    
+    private void playAudio(String audioFilePath) {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+        Media sound = new Media(new File(audioFilePath).toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.stop());
+        mediaPlayer.play();
     }
 }
