@@ -41,7 +41,7 @@ public class MainPage extends Application {
         StackPane root = new StackPane();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setScene(scene);
-        character = new Character("Black", 0, 0, 0, 0,0);
+        character = new Character("Black", 0, 0, 45, 90,0);
 
         // Load and set the background image to fit the scene
         Image bgImage = new Image("file:src/main/resources/images/首頁背景.jpeg");
@@ -153,7 +153,7 @@ public class MainPage extends Application {
     }
 
     private void showGameOverScreen(int level, Stage stage) {
-        EndPane endPane = new EndPane(level, () -> restartGame(stage),()->showMainPage());
+        EndPane endPane = new EndPane(level, () -> restartGame(stage),()->showMainPage(), character);
         stage.setScene(new Scene(endPane, WIDTH, HEIGHT));
     }
 
