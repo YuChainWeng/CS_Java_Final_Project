@@ -109,7 +109,7 @@ public class MainPage extends Application {
         instructionImageView.setFitWidth(37.5);
         instructionImageView.setFitHeight(75);
         Button instructionButton = new Button("", instructionImageView);
-        instructionButton.setOnAction(e -> showInstruction(stage));
+        instructionButton.setOnMouseClicked(e -> showInstruction(stage));
         instructionButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         StackPane.setAlignment(instructionButton, Pos.TOP_RIGHT);
         StackPane.setMargin(instructionButton, new Insets(10));
@@ -135,8 +135,8 @@ public class MainPage extends Application {
         StackPane.setMargin(exitButton, new Insets(10));
 
         // Add all nodes to root
-        root.getChildren().addAll(settingsButton, instructionImageView, startImageView, exitButton, char1ImageView,
-                char2ImageView);
+        root.getChildren().addAll(settingsButton, startImageView, exitButton, char1ImageView,
+                char2ImageView,instructionButton);
 
         // Initialize Settings Pane
         settingsPane = new SettingsPane(this);
