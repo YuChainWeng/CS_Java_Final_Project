@@ -23,39 +23,39 @@ public class DamageStair extends Stage {
 	public int getDamage() {
 		return damage;
 	}
-
+	// Set the damage of the damage stair
 	public void setDamage(int damage) {
 		this.damage = damage;
 	}
-
+	// Get the image of the damage stair
 	public Image getImage() {
 		return super.getStairImage();
 	}
-
+	// Get the image view of the damage stair
 	public ImageView getImageView() {
 		return super.getStairImageView();
 	}
-
+	// Get the speed of the damage stair
 	public double getSpeed() {
 		return super.getSpeed();
 	}
-
+	// Set the speed of the damage stair
 	public void setSpeed(double speed) {
 		super.setSpeed(speed);
 	}
-
+	// Get the x position of the damage stair
 	public double getPositionX() {
 		return super.getPositionX();
 	}
-
+	// Set the x position of the damage stair
 	public void setPositionX(double positionX) {
 		super.setPositionX(positionX);
 	}
-
+	// Get the y position of the damage stair
 	public double getPositionY() {
 		return super.getPositionY();
 	}
-
+	// Set the y position of the damage stair
 	public void setPositionY(double positionY) {
 		super.setPositionY(positionY);
 	}
