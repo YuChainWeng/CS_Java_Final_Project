@@ -14,9 +14,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Background;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
+
+
+
+
 public class EndPane extends Pane {
     private int levelReached;
-    Character character;
+    private Character character;
+    private boolean soundEffect = true;
 
     public EndPane(int levelReached, Runnable onRestart, Runnable onReturnToMain, Character character) {
         this.levelReached = levelReached;
@@ -71,7 +79,7 @@ public class EndPane extends Pane {
         restartButton.setGraphic(restartImageView);
         button.getChildren().add(restartButton);
         restartButton.setStyle("-fx-background-color: transparent;");
-        restartButton.setOnAction(e -> onRestart.run());
+        restartButton.setOnAction(e -> restart(onRestart));
 
         Button returnToMainButton = new Button("");
         Image returnToMainImage = new Image("file:src/main/resources/images/回到主頁.png");
@@ -81,7 +89,7 @@ public class EndPane extends Pane {
         returnToMainButton.setGraphic(returnToMainImageView);
         button.getChildren().add(returnToMainButton);
         returnToMainButton.setStyle("-fx-background-color: transparent;");
-        returnToMainButton.setOnAction(e -> onReturnToMain.run());
+        returnToMainButton.setOnAction(e -> returnToMain(onReturnToMain));
 
         layout.getChildren().addAll(levelbox, button);
         this.getChildren().add(layout);
@@ -89,5 +97,27 @@ public class EndPane extends Pane {
         // Center the layout in the pane
         layout.setLayoutX(200);
         layout.setLayoutY(600);
+    }
+
+    public void returnToMain(Runnable onReturnToMain) {
+        if(soundEffect)
+            playAudio("src/main/resources/audios/打開音效.mp3" );
+        onReturnToMain.run();
+    }
+
+    public void restart(Runnable onRestart) {
+        if(soundEffect)
+            playAudio("src/main/resources/audios/打開音效.mp3" );
+        onRestart.run();
+    }
+
+    public void setSoundEffect(boolean soundEffect) {
+        this.soundEffect = soundEffect;
+    }
+
+    public void playAudio(String path) {
+        Media media = new Media(new File(path).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
     }
 }

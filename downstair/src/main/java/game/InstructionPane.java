@@ -12,8 +12,10 @@ import javafx.scene.media.MediaPlayer;
 import java.io.File;
 public class InstructionPane extends StackPane {
     private boolean isVisible = false;
+    private boolean soundEffect = true;
 
-    public InstructionPane() {
+    public InstructionPane(boolean soundEffect) {
+        this.soundEffect = soundEffect;
         initializeUI();
     }
 
@@ -67,12 +69,22 @@ public class InstructionPane extends StackPane {
         ImageView closeImageView = new ImageView(closeImage);
         closeImageView.setFitWidth(40);
         closeImageView.setFitHeight(80);
-        closeImageView.setOnMouseClicked(e -> this.setVisible(false)); // Toggle visibility
+        closeImageView.setOnMouseClicked(e -> Leave());
         closeImageView.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         closeImageView.setTranslateY(250);
     
         this.getChildren().addAll(firstPage, secondPage, closeImageView);
         this.setVisible(false); // Initially hide the settings pane
+    }
+
+    public void setSoundEffect(boolean soundEffect) {
+        this.soundEffect = soundEffect;
+    }
+
+    public void Leave() {
+        if(soundEffect)
+            playAudio("src/main/resources/audios/關閉音效.mp3");
+        this.setVisible(false);
     }
 
     public void toggleVisibility() {

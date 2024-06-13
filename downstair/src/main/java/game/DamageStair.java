@@ -3,9 +3,12 @@ package game;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+// Inherit the Stage class to create a damage stair object
 public class DamageStair extends Stage {
+	// The damage of the damage stair
 	private int damage = 1;
 
+	// Constructor
 	public DamageStair(int damage, double speed, double positionX, double positionY, double width, double height) {
 		this.damage = damage;
 		super.setStairImage(new Image("file:src/main/resources/images/油鍋.png"));
@@ -16,6 +19,7 @@ public class DamageStair extends Stage {
 		super.setHeight(height);
 	}
 
+	// Get and return all the attributes of the damage stair
 	public int getDamage() {
 		return damage;
 	}

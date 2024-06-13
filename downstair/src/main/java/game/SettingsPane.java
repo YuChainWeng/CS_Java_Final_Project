@@ -15,6 +15,7 @@ import javafx.scene.media.MediaPlayer;
 public class SettingsPane extends VBox {
     private boolean isVisible = false;
     private MainPage mainPage;
+    private boolean soundEffect = true;
     public SettingsPane(MainPage mainPage) {
         super(2); // 2 is the spacing between elements in the VBox
         this.mainPage = mainPage;
@@ -73,35 +74,48 @@ public class SettingsPane extends VBox {
         ImageView closeImageView = new ImageView(closeImage);
         closeImageView.setFitWidth(40);
         closeImageView.setFitHeight(80);
-        closeImageView.setOnMouseClicked(e -> this.setVisible(false)); // Toggle visibility
+        closeImageView.setOnMouseClicked((MouseEvent event) -> Leave());
         closeImageView.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");	
         
         on_imgview.setOnMouseClicked((MouseEvent event) -> {
             on_imgview.setOpacity(1);
             off_imgview.setOpacity(0.3);
             mainPage.playBackgroundMusic("src/main/resources/audios/bgm.mp3");
+            if(soundEffect)
+                playAudio("src/main/resources/audios/打開音效.mp3");
+
         });
 
         off_imgview.setOnMouseClicked((MouseEvent event) -> {
             off_imgview.setOpacity(1);
             on_imgview.setOpacity(0.3);
             mainPage.stopBackgroundMusic();
+            if(soundEffect)
+                playAudio("src/main/resources/audios/關閉音效.mp3");
         });
         
         on_imgview_2.setOnMouseClicked((MouseEvent event) -> {
 			on_imgview_2.setOpacity(1);
 			off_imgview_2.setOpacity(0.3);
+            soundEffect = true;
 			playAudio("src/main/resources/audios/打開音效.mp3");
         });
 
         off_imgview_2.setOnMouseClicked((MouseEvent event) -> {
 			off_imgview_2.setOpacity(1);
 			on_imgview_2.setOpacity(0.3);
+            soundEffect = false;
 			playAudio("src/main/resources/audios/關閉音效.mp3");
         });
 
         this.getChildren().addAll(bgm , sound_effects, closeImageView);
         this.setVisible(false); // Initially hide the settings pane
+    }
+
+    private void Leave(){
+        if(soundEffect)
+            playAudio("src/main/resources/audios/關閉音效.mp3");
+        this.setVisible(false);
     }
 
     public void toggleVisibility() {
@@ -113,5 +127,9 @@ public class SettingsPane extends VBox {
         Media sound = new Media(new File(audioFilePath).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
+    }
+
+    public boolean getSoundeffect() {
+        return soundEffect;
     }
 }

@@ -3,8 +3,10 @@ package game;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+// This class is used to create a character object
 public class Character extends ImageView {
 
+	// The name of the character and the basic attributes of the character
 	private String CharacterName;
 	private int life = 10;
 	private String direction = "front";
@@ -18,6 +20,7 @@ public class Character extends ImageView {
 	private double invincibleTime = 0;
 	private double slowingTime=0;
 
+	// Constructor
 	public Character(String character, double positionX, double positionY, double width, double height, double velocityX) {
 		this.CharacterName = character;
 		this.positionX = positionX;
@@ -27,6 +30,7 @@ public class Character extends ImageView {
 		this.velocityX = velocityX;
 	}
 
+	// Return the image of the character
 	public Image getCharacterImage(String ChoosenCharacter) {
 		Image charImage;
 		if (ChoosenCharacter.equals("Black")) {
@@ -37,6 +41,7 @@ public class Character extends ImageView {
 		return charImage;
 	}
 
+	// Return the image of the character when the character is dead
 	public Image getChatacterDiedImage(String ChoosenCharacter) {
 		Image charImage;
 		if (ChoosenCharacter.equals("Black")) {
@@ -47,6 +52,7 @@ public class Character extends ImageView {
 		return charImage;
 	}
 
+	// Return the image of the character with the specified width and height
 	public ImageView getCharacterImage(String ChoosenCharacter, int width, int height) {
 		Image charImage = getCharacterImage(ChoosenCharacter);
 		ImageView charImageView = new ImageView(charImage);
@@ -55,6 +61,7 @@ public class Character extends ImageView {
 		return charImageView;
 	}
 
+	// Return the image of the character when the character is dead with the specified width and height
 	public ImageView getCharacterDiedImage(String ChoosenCharacter, int width, int height) {
 		Image charImage = getChatacterDiedImage(ChoosenCharacter);
 		ImageView charImageView = new ImageView(charImage);
@@ -63,14 +70,17 @@ public class Character extends ImageView {
 		return charImageView;
 	}
 
+	// Return the image
 	public Image getThisCharacterImage() {
 		return getCharacterImage(CharacterName);
 	}
 
+	// Return the image of the character with the specified width and height
 	public ImageView getThisCharacterImage(int width, int height) {
 		return getCharacterImage(CharacterName, width, height);
 	}
 
+	// Return the image with the specified direction
 	public Image getCharacterImageWithDirection(String ChoosenCharacter, String direction) {
 		Image charImage;
 		if (ChoosenCharacter.equals("Black")) {
@@ -91,6 +101,15 @@ public class Character extends ImageView {
 		return charImage;
 	}
 
+	// Character regains life based on the character's name
+	public void ReganLife() {
+		if(life<10)
+			life++;
+		if(life<10 && !CharacterName.equals("Black"))
+			life++;
+	}
+
+	// Get the name of the character and return the name of the character
 	public String getCharacterName() {
 		return CharacterName;
 	}
@@ -99,6 +118,7 @@ public class Character extends ImageView {
 		this.CharacterName = ChoosenCharacter;
 	}
 
+	// Get the life of the character and set the life of the character
 	public int getLife() {
 		return life;
 	}
@@ -107,6 +127,7 @@ public class Character extends ImageView {
 		this.life = life;
 	}
 
+	// Get the direction of the character and set the direction of the character
 	public String getDirection() {
 		return direction;
 	}
@@ -115,6 +136,7 @@ public class Character extends ImageView {
 		this.direction = direction;
 	}
 
+	// Get the position of the character and set the position of the character
 	public double getPositionX() {
 		return positionX;
 	}
@@ -131,6 +153,7 @@ public class Character extends ImageView {
 		this.positionY = positionY;
 	}
 
+	// Get the velocity of the character and set the velocity of the character
 	public double getVelocityY() {
 		return velocityY;
 	}
@@ -139,6 +162,7 @@ public class Character extends ImageView {
 		this.velocityY = velocityY;
 	}
 
+	// Get the gravity of the character and set the gravity of the character
 	public double getGravity() {
 		return gravity;
 	}
@@ -147,6 +171,7 @@ public class Character extends ImageView {
 		this.gravity = gravity;
 	}
 
+	// Get the width and height of the character and set the width and height of the character
 	public double getWidth() {
 		return width;
 	}
@@ -171,6 +196,7 @@ public class Character extends ImageView {
 		this.velocityX = velocityX;
 	}
 
+	// Get the invincible time of the character and set the invincible time of the character
 	public double getInvincibleTime() {
 		return invincibleTime;
 	}
@@ -179,6 +205,7 @@ public class Character extends ImageView {
 		this.invincibleTime = invincibleTime;
 	}
 
+	// Get the slowing time of the character and set the slowing time of the character
 	public double getSlowingTime(){
 		return slowingTime;
 	}
