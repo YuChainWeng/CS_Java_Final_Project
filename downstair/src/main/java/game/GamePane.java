@@ -40,7 +40,7 @@ public class GamePane extends Pane {
 	// The life bars
 	private Rectangle[] lifeBars = new Rectangle[10];
 	// The current level
-	private int level = 1;
+	private int level = 0;
 	// The label to display the current level
 	private Label levelCountLabel = new Label(Integer.toString(level));
 	// The list of stairs
@@ -255,7 +255,6 @@ public class GamePane extends Pane {
 		stairs.removeIf(stair -> stair.getPositionY() + stair.getHeight() < -100); // Remove stairs that are no longer
 		// visible
 		while (stairs.size() < 20 && (stairs.isEmpty() || 900 - stairs.get(stairs.size() - 1).getPositionY() > 135)) {
-			level++;
 			double x = new Random().nextDouble() * 495 + 35;
 			double y = 900; // Start new stairs at the bottom of the screen
 			GenerateRandomStair(x, y);
@@ -309,6 +308,8 @@ public class GamePane extends Pane {
 		if (!onStair) {
 			character.setVelocityY(character.getVelocityY() + gravity * deltaTime);
 			character.setVelocityX(characterVelocityX);
+		}else if (onStair && !lastUpdateOnStair){
+			level++;
 		}
 		// Update character's invincible time
 		if (character.getInvincibleTime() > 0) {
