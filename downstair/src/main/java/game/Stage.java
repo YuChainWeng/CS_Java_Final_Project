@@ -13,6 +13,7 @@ public class Stage{
 	private double width;
 	private double height;
 	private double speed;
+	private boolean isCounted = false;
 	// Constructor
 	public Image getStairImage() {
 		return stariImage;
@@ -65,5 +66,14 @@ public class Stage{
 	// Set the speed of the stair
 	public void setSpeed(double speed) {
 		this.speed = speed;
+	}
+	// Get the boolean value of isCounted
+	public boolean isCounted() {
+		return isCounted;
+	}
+
+	// Set the boolean value of isCounted
+	public void setCounted(boolean counted) {
+		isCounted = counted;
 	}
 }
