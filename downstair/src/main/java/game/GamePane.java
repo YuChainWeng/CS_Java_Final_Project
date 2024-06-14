@@ -98,9 +98,9 @@ public class GamePane extends Pane {
 
 		// Create ten life bars
 		for (int i = 0; i < lifeBars.length; i++) {
-			lifeBars[i] = new Rectangle(205 + i * 12, 20, 8, 25); // 設定每個長方形的位置和大小
-			lifeBars[i].setFill(Color.RED); // 設定生命長方形的顏色
-			this.getChildren().add(lifeBars[i]); // 添加到Pane中
+			lifeBars[i] = new Rectangle(205 + i * 12, 20, 8, 25); // Set the position and size of the life bar
+			lifeBars[i].setFill(Color.RED); // Set the colar of the life bar
+			this.getChildren().add(lifeBars[i]); // Add the life bar to the pane
 		}
 		// Set the background image
 		BackgroundImage backgroundImage = new BackgroundImage(bgImage, BackgroundRepeat.NO_REPEAT,
@@ -228,17 +228,8 @@ public class GamePane extends Pane {
 	}
 
 	private void checkGameOverConditions() { // Check if the game is over
-		if (character.getLife() <= 0 || character.getPositionY() < -200 || character.getPositionY() > 1000) { // Check
-																												// if
-																												// the
-																												// character's
-																												// life
-																												// is
-																												// less
-																												// than
-																												// or
-																												// equal
-																												// to 0
+		// Check if the character's life is less than or equal to 0
+		if (character.getLife() <= 0 || character.getPositionY() < -200 || character.getPositionY() > 1000) { 
 			if (gameEndCallback != null) // Check if a game end callback is set
 				if (SoundEffect)
 					playAudio("src/main/resources/audios/lose.wav"); // Play a sound effect
